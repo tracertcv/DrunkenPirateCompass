@@ -7,7 +7,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -18,7 +17,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements LocationListener, SensorEventListener, AsyncResponse{
+public class MainActivity extends ActionBarActivity implements LocationListener, SensorEventListener, AsyncPlaceResponse {
 
     //Status flag
     boolean isGPSEnabled = false;
@@ -126,9 +125,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
                     "&types="+URLEncoder.encode(typeString,"UTF-8")+
                     "&key="+apiKey;
 
-            PlaceGetter mPlaceGetter = new PlaceGetter(placeList, location, lastJSONResponse);
-            mPlaceGetter.delegate = this;
-            mPlaceGetter.execute(placeUrlString);
+            AsyncPlaceGetter mAsyncPlaceGetter = new AsyncPlaceGetter(placeList, location, lastJSONResponse);
+            mAsyncPlaceGetter.delegate = this;
+            mAsyncPlaceGetter.execute(placeUrlString);
         }catch(Exception e){
             e.printStackTrace();
         }
