@@ -102,6 +102,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return location;
     }
 
@@ -205,7 +206,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
         UpdatePlaces();
 
         //if(placeList.size()>0)places.setText(placeList.get(0).name);
-        System.out.println(placeList.toString());
     }
 
     @Override
@@ -223,7 +223,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
                     float orientation[] = new float[3];
                     SensorManager.getOrientation(R, orientation);
                     bearing = Math.toDegrees(orientation[0]);
-                    System.out.println(bearing);
                     updateCompass();
                 }
             }
@@ -235,8 +234,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
 
     private void updateCompass() {
         Location target = placeList.get(0).loc;
-        double cBearing = bearing;
-        double difference = Math.abs(bearing - location.bearingTo(target)) % 360.0;
+        double difference = (bearing + location.bearingTo(target)) % 360.0;
 
         drawView.setRotation(difference);
     }
