@@ -29,6 +29,8 @@ public class DrawContentSurfaceView extends SurfaceView implements SurfaceHolder
 
         getHolder().addCallback(this);
         drawTask = new AsyncDraw(this.getHolder(), this);
+        drawTask.setRunning(true);
+        drawTask.start();
     }
 
     @Override
@@ -48,8 +50,7 @@ public class DrawContentSurfaceView extends SurfaceView implements SurfaceHolder
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawTask.SetRunning(true);
-        drawTask.start();
+        drawTask.setRunning(true);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class DrawContentSurfaceView extends SurfaceView implements SurfaceHolder
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        drawTask.SetRunning(false);
+        drawTask.setRunning(false);
         try {
             drawTask.join();
         } catch (Exception e) {
@@ -70,5 +71,17 @@ public class DrawContentSurfaceView extends SurfaceView implements SurfaceHolder
     public void setRotation(double rotation) {
         this.rotation = (float) rotation;
         System.out.println(rotation);
+    }
+
+    public void pauseThread(){
+        if(drawTask.isRunning())drawTask.setRunning(false);
+    }
+
+    public void resumeThread(){
+        if(!drawTask.isRunning()){
+            drawTask = new AsyncDraw(this.getHolder(), this);
+            drawTask.setRunning(true);
+            drawTask.start();
+        }
     }
 }

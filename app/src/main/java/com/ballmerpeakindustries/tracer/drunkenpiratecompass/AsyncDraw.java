@@ -19,9 +19,10 @@ public class AsyncDraw extends Thread {
         this.drawView = drawView;
     }
 
-    public void SetRunning(boolean running) {
+    public void setRunning(boolean running) {
         this.running = running;
     }
+    public boolean isRunning(){return running;}
 
     @Override
     public void run() {

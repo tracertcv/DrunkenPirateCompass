@@ -137,8 +137,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
 
@@ -164,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -174,7 +174,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
 
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -189,7 +189,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
         return super.onOptionsItemSelected(item);
 
 
-    }
+    }*/
 
     @Override
     public void onLocationChanged(Location location) {
@@ -233,7 +233,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
     }
 
     private void updateCompass() {
-        Location target = placeList.get(0).loc;
+        Location target = (placeList.size()>0) ? placeList.get(0).loc : new Location("DUMMY_PROVIDER");
         double difference = (bearing + location.bearingTo(target)) % 360.0;
 
         drawView.setRotation(difference);
@@ -244,6 +244,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
         super.onResume();
         mSensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, magnet, SensorManager.SENSOR_DELAY_NORMAL);
+        drawView.resumeThread();
     }
 
     @Override
@@ -251,6 +252,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener,
         super.onPause();
         stopUsingGPS();
         mSensorManager.unregisterListener(this);
+        drawView.pauseThread();
     }
 
     @Override
